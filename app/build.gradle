@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -63,9 +64,14 @@ dependencies {
 
     //implementation 'com.github.Dhaval2404:ColorPicker:2.3'
 
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation("com.google.dagger:hilt-android:2.44")
+//    kapt("com.google.dagger:hilt-android-compiler:2.44")
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //dagger
+    implementation 'com.google.dagger:dagger:2.44'
+    kapt 'com.google.dagger:dagger-compiler:2.44'
+    //implementation 'javax.inject:javax.inject:1'
 
 
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
@@ -83,4 +89,6 @@ dependencies {
     // Kotlin components
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+
+    implementation "androidx.fragment:fragment:1.2.5"
 }

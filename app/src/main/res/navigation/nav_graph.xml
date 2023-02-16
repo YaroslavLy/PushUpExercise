@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.yaroslav.pushupexercise.MainFragment"
+        android:name="com.yaroslav.pushupexercise.ui.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
