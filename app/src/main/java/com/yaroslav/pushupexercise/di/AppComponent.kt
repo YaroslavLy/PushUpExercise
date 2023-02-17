@@ -2,6 +2,7 @@ package com.yaroslav.pushupexercise.di
 
 import android.content.Context
 import com.yaroslav.pushupexercise.MainActivity
+import com.yaroslav.pushupexercise.ui.add.AddViewModelFactory
 import com.yaroslav.pushupexercise.ui.main.MainFragment
 import com.yaroslav.pushupexercise.ui.main.MainViewModel
 import com.yaroslav.pushupexercise.ui.main.ViewModelFactory
@@ -15,6 +16,8 @@ interface AppComponent {
     fun myViewModel(): MainViewModel
 
     fun viewModelsFactory(): ViewModelFactory
+
+    fun addViewModelsFactory(): AddViewModelFactory
 
     fun context(): Context
 

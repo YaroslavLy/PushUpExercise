@@ -1,5 +1,6 @@
 package com.yaroslav.pushupexercise.ui.main
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,6 +8,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yaroslav.pushupexercise.databinding.FragmentPushUpItemBinding
 import com.yaroslav.pushupexercise.models.PushUp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PushUpAdapter() :
     ListAdapter<PushUp, PushUpAdapter.PushUpViewHolder>(DiffCallback) {
@@ -34,8 +37,15 @@ class PushUpAdapter() :
     inner class PushUpViewHolder(private var binding: FragmentPushUpItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("SimpleDateFormat")
         fun bind(pushUp: PushUp) {
-            binding.testText.text = pushUp.toString()
+            //binding.testText.text = pushUp.toString()
+            binding.pushUps.text = pushUp.countPushUps.toString()
+
+            //"yyyy/M/dd"
+            val sdf = SimpleDateFormat( "hh:mm")
+            binding.time.text = sdf.format(Date(pushUp.recordTime.toLong()*1000)).toString()
+
 //            binding.buttonBasketDelete.setOnClickListener {
 //                actionListener.onProductDelete(productBasket)
 //            }

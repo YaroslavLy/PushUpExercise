@@ -4,10 +4,17 @@ import com.yaroslav.pushupexercise.models.PushUp
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class PushUpRepository @Inject constructor(private val pusUpsSource: PushUpsSource) {
+class PushUpRepository @Inject constructor(
+    private val pusUpsSource: PushUpsSource,
+    private val countDataSource: CountDataSource
+    ) {
 
-    fun getPushUps(): Flow<List<PushUp>> = pusUpsSource.getPushUps()
+    fun getPushUpsForToday(startDay: Int): Flow<List<PushUp>> = pusUpsSource.getPushUpsForToday(startDay)
 
     suspend fun addPushUp(pushUp: PushUp) = pusUpsSource.addPushUp(pushUp)
+
+    fun saveLastCountPushUp(lastCount: Int) = countDataSource.saveLastCount(lastCount)
+
+    fun getLastCountPushUp():Int = countDataSource.getLastCount()
 
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/addExerciseFragment"
-        android:name="com.yaroslav.pushupexercise.AddExerciseFragment"
+        android:name="com.yaroslav.pushupexercise.ui.add.AddExerciseFragment"
         android:label="fragment_add_exercise"
         tools:layout="@layout/fragment_add_exercise" >
         <action
@@ -15,6 +15,10 @@
             app:destination="@id/mainFragment"
             app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="idPushUp"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/statisticsFragment"

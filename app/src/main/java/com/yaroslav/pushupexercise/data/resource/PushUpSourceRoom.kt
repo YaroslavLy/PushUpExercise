@@ -9,7 +9,9 @@ class PushUpSourceRoom @Inject constructor(
     private val pushUpDao: PushUpDao
 ) : PushUpsSource {
 
-    override fun getPushUps(): Flow<List<PushUp>> = pushUpDao.getPushUps()
+    override fun getPushUpsForToday(startDay: Int): Flow<List<PushUp>> = pushUpDao.getPushUpsForToday(startDay)
 
     override suspend fun addPushUp(pushUp: PushUp) = pushUpDao.insert(pushUp)
+
+    override fun getPushUpById(id: Int) = pushUpDao.getPushUpById(id)
 }

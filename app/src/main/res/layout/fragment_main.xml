@@ -7,18 +7,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.main.MainFragment"
         android:orientation="vertical"
-        >
+        tools:context=".ui.main.MainFragment">
 
-        <TextView
-            android:id="@+id/text_sum"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:gravity="center"
-            android:textSize="32sp"
-            tools:text="Dzisiaj: 125" />
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/text_sum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|bottom"
+                android:textSize="32sp"
+                tools:text="Dzisiaj: 125"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                tools:text="yyyy/M/dd"
+                android:gravity="center|top"
+                />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_exercise"
@@ -31,18 +48,18 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2.15"
-            android:layout_marginEnd="60dp"
             android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            android:layout_weight="2.15"
             android:text="Statystyka" />
 
         <Button
             android:id="@+id/button_add"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:layout_marginEnd="40dp"
             android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="2"
             android:text="Dodaj" />
 
     </LinearLayout>
