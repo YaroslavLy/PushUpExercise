@@ -46,15 +46,20 @@
 
         <Button
             android:id="@+id/button_time"
+            style="?attr/materialButtonOutlinedStyle"
+
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            android:text="12:00"
+            android:textSize="32sp"
+            app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12:00" />
 
 
         <LinearLayout
@@ -74,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginEnd="10dp"
-                android:text="Kasuj" />
+                android:text="Anulować" />
 
             <Button
                 android:id="@+id/button_ok"

@@ -1,6 +1,7 @@
 package com.yaroslav.pushupexercise.data.resource
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -17,6 +18,9 @@ interface PushUpDao {
 
     @Query("SELECT * FROM push_up WHERE id = :id")
     fun getPushUpById(id: Int): Flow<PushUp>
+
+    @Query("DELETE FROM push_up WHERE id = :id")
+    suspend fun deletePushUpById(id: Int)
 
     //OnConflictStrategy combine
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -14,4 +14,6 @@ class PushUpSourceRoom @Inject constructor(
     override suspend fun addPushUp(pushUp: PushUp) = pushUpDao.insert(pushUp)
 
     override fun getPushUpById(id: Int) = pushUpDao.getPushUpById(id)
+
+    override suspend fun deletePushUpById(id: Int) = pushUpDao.deletePushUpById(id)
 }

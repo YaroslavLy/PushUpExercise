@@ -10,6 +10,8 @@ interface PushUpsSource {
     suspend fun addPushUp(pushUp: PushUp)
 
     fun getPushUpById(id: Int): Flow<PushUp>
+
+    suspend  fun deletePushUpById(id: Int)
     //fun getCar(id: Int): Flow<Car>
     //suspend fun deleteCar(id: Int)
     //suspend fun  updateCar(id: Int,car: Car)

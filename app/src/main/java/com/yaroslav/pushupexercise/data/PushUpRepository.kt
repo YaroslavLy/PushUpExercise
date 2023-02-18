@@ -17,4 +17,8 @@ class PushUpRepository @Inject constructor(
 
     fun getLastCountPushUp():Int = countDataSource.getLastCount()
 
+    fun getPushUpById(id: Int) = pusUpsSource.getPushUpById(id)
+
+    suspend fun deletePushUpById(id: Int) = pusUpsSource.deletePushUpById(id)
+
 }
