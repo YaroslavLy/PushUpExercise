@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yaroslav.pushupexercise.databinding.FragmentPushUpItemBinding
 import com.yaroslav.pushupexercise.models.PushUp
+import com.yaroslav.pushupexercise.utils.formatHour24AndMinutes
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -70,8 +71,7 @@ class PushUpAdapter(
         @SuppressLint("SimpleDateFormat")
         fun bind(pushUp: PushUp) {
             binding.pushUps.text = pushUp.countPushUps.toString()
-            val sdf = SimpleDateFormat( "hh:mm")
-            binding.time.text = sdf.format(Date(pushUp.recordTime.toLong()*1000)).toString()
+            binding.time.text = formatHour24AndMinutes.format(Date(pushUp.recordTime.toLong()*1000)).toString()
 
         }
     }

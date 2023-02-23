@@ -1,6 +1,7 @@
 package com.yaroslav.pushupexercise.data
 
 import com.yaroslav.pushupexercise.models.PushUp
+import com.yaroslav.pushupexercise.models.PushUpSumYear
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -20,5 +21,15 @@ class PushUpRepository @Inject constructor(
     fun getPushUpById(id: Int) = pusUpsSource.getPushUpById(id)
 
     suspend fun deletePushUpById(id: Int) = pusUpsSource.deletePushUpById(id)
+
+    fun getPushUpsDaily() = pusUpsSource.getPushUpsDaily()
+
+    //WEEKLY
+    fun getPushUpsWeekly() = pusUpsSource.getPushUpsWeekly()
+
+    fun getPushUpsByMonth() = pusUpsSource.getPushUpsByMonth()
+
+    fun getPushUpsByYear() = pusUpsSource.getPushUpsByYear()
+
 
 }

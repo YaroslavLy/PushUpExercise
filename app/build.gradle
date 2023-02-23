@@ -91,4 +91,8 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 
     implementation "androidx.fragment:fragment:1.2.5"
+
+
+    //graph
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

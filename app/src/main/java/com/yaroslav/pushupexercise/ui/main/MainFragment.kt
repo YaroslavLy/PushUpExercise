@@ -17,6 +17,7 @@ import com.yaroslav.pushupexercise.R
 import com.yaroslav.pushupexercise.appComponent
 import com.yaroslav.pushupexercise.databinding.FragmentMainBinding
 import com.yaroslav.pushupexercise.ui.add.AddExerciseFragmentArgs
+import com.yaroslav.pushupexercise.utils.formatFullDateWithDots
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -56,10 +57,6 @@ class MainFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //val args: MainFragmentArgs by navArgs()
-
-
-
 
         binding.recyclerExercise.layoutManager =
             LinearLayoutManager(context)
@@ -90,10 +87,9 @@ class MainFragment : Fragment() {
 
         lifecycleScope.launch {
             pushUpViewModel.dateState.collect {
-                val sdf = SimpleDateFormat("dd.MM.yyyy")
                 val date = Date(it.toLong() * 1000)
                 dateSeconds = it
-                binding.date.text = sdf.format(date).toString()
+                binding.date.text = formatFullDateWithDots.format(date).toString()
             }
         }
 
@@ -112,6 +108,10 @@ class MainFragment : Fragment() {
             pushUpViewModel.updateDate((Date().time/1000).toInt(),action = 0)
             true
         }
+
+        binding.buttonStatistics.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_statisticsFragment)
+        }
     }
 
     private fun datePicked() {
@@ -126,11 +126,7 @@ class MainFragment : Fragment() {
                 // Do something with the selected date (e.g. update a TextView with the selected date)
                 val calendar = Calendar.getInstance()
                 calendar.set(selectedYear, selectedMonth, selectedDay)
-                val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-                val formattedDate = dateFormat.format(calendar.time)
-                Log.i("TAG1802", calendar.time.toString())
                 pushUpViewModel.updateDate((calendar.time.time / 1000).toInt(), 0)
-                //binding.date.text = formattedDate
             },
             year,
             month,

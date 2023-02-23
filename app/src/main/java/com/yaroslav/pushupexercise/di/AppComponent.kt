@@ -6,6 +6,8 @@ import com.yaroslav.pushupexercise.ui.add.AddViewModelFactory
 import com.yaroslav.pushupexercise.ui.main.MainFragment
 import com.yaroslav.pushupexercise.ui.main.MainViewModel
 import com.yaroslav.pushupexercise.ui.main.ViewModelFactory
+import com.yaroslav.pushupexercise.ui.statistics.StatisticsViewModel
+import com.yaroslav.pushupexercise.ui.statistics.StatisticsViewModelFactory
 import dagger.Component
 import javax.inject.Singleton
 
@@ -18,6 +20,8 @@ interface AppComponent {
     fun viewModelsFactory(): ViewModelFactory
 
     fun addViewModelsFactory(): AddViewModelFactory
+
+    fun statisticsViewModelsFactory(): StatisticsViewModelFactory
 
     fun context(): Context
 

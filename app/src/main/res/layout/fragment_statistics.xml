@@ -1,14 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StatisticsFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    tools:context=".StatisticsFragment"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:id="@+id/time_period_options_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="horizontal"
+        android:background="#878787"
+        android:layout_weight="1.8"
+        >
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/daily_option_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Daily"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            />
+
+        <TextView
+            android:id="@+id/weekly_option_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Weekly"
+            android:textColor="@color/white"            android:layout_gravity="center"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            />
+
+        <TextView
+            android:id="@+id/monthly_option_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Monthly"
+            android:textColor="@color/white"            android:layout_gravity="center"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            />
+
+        <TextView
+            android:id="@+id/yearly_option_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Yearly"
+            android:textColor="@color/white"            android:layout_gravity="center"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            />
+
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChartDaily"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChartWeekly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:visibility="gone"
+        />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChartMonthly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:visibility="gone"
+        />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChartYearly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/textLine1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="Line 1"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/textLine2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="Line 2"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/textLine3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="Line 3"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:textSize="20sp"
+            />
+    </LinearLayout>
+
+</LinearLayout>
+</layout>
