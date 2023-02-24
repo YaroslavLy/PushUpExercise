@@ -32,22 +32,23 @@ class MainViewModel @Inject constructor(
 
 
 
-    init {
-        viewModelScope.launch {
-            //todo move to utils
-            val calendar = Calendar.getInstance() // Get a Calendar instance
-            calendar.set(Calendar.HOUR_OF_DAY, 0) // Set the hour to 0
-            calendar.set(Calendar.MINUTE, 0) // Set the minute to 0
-            calendar.set(Calendar.SECOND, 0) // Set the second to 0
-            calendar.set(Calendar.MILLISECOND, 0) // Set the millisecond to 0
-            val startOfDayInMillis = calendar.timeInMillis // Get the time in milliseconds
-            val startDay = (startOfDayInMillis / 1000).toInt()
+//    init {
+//        viewModelScope.launch {
+//            //todo move to utils
+//            val calendar = Calendar.getInstance() // Get a Calendar instance
+//            calendar.set(Calendar.HOUR_OF_DAY, 0) // Set the hour to 0
+//            calendar.set(Calendar.MINUTE, 0) // Set the minute to 0
+//            calendar.set(Calendar.SECOND, 0) // Set the second to 0
+//            calendar.set(Calendar.MILLISECOND, 0) // Set the millisecond to 0
+//            val startOfDayInMillis = calendar.timeInMillis // Get the time in milliseconds
+//            val startDay = (startOfDayInMillis / 1000).toInt()
+//
+//            pushUpRepository.getPushUpsForToday(startDay).collect {
+//                _pushUpsStateFlow.value = it
+//            }
+//        }
+//    }
 
-            pushUpRepository.getPushUpsForToday(startDay).collect {
-                _pushUpsStateFlow.value = it
-            }
-        }
-    }
 
     // action == -1 - minus 1 day, action == 0 - set data use dateTime, action == 1 - add 1 day
     fun updateDate(dateTime: Int , action: Int) {
@@ -64,6 +65,7 @@ class MainViewModel @Inject constructor(
             }
             else -> {}
         }
+        _pushUpsStateFlow.value = emptyList()
         updatePushUps()
     }
 

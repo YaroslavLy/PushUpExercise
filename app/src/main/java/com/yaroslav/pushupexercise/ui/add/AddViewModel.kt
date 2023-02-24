@@ -26,6 +26,7 @@ class AddViewModel @Inject constructor(
     fun getData(id: Int, dateSeconds: Int) {
         //todo replace valid if default
         if (id < 0) {
+            val r = pushUpRepository.getLastCountPushUp()
             _countPushUpsStateFlow.value = pushUpRepository.getLastCountPushUp()
             _timeStateFlow.value = dateSeconds//(Date().time / 1000).toInt()
         } else {
@@ -63,6 +64,9 @@ class AddViewModel @Inject constructor(
     fun savePushUp(id: Int) {
 
         val mId = if (id < 0) null else id
+        //save in shared prefs
+        pushUpRepository.saveLastCountPushUp(_countPushUpsStateFlow.value)
+
         viewModelScope.launch {
             //id null == new record, id 1 == update record by id 1
             pushUpRepository.addPushUp(
@@ -72,9 +76,8 @@ class AddViewModel @Inject constructor(
                     _timeStateFlow.value
                 )
             )
-            //save in shared prefs
-            pushUpRepository.saveLastCountPushUp(_countPushUpsStateFlow.value)
         }
+
     }
 
 

@@ -1,4 +1,27 @@
 <resources>
     <string name="app_name">pushupexercise</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="push_up_count">Push Up Count</string>
+    <string name="total_push_ups_day_main">Total: %1$s</string>
+    <string name="statistics_button_main">Statistics</string>
+    <string name="add_button_main">Add</string>
+    <string name="day_with_data">Day: %1$s</string>
+    <string name="equals_previous_day">It\'s like yesterday( %1$s )</string>
+    <string name="not_equals_previous_day">Today (%1$s) on %2$s %3$s than yesterday (%4$s)</string>
+    <string name="more_procent">% more </string>
+    <string name="less_procent">% less </string>
+    <string name="prognosis_for_week_month_year">"If that many times each day, then in a week %1$d in a month %2$d in a year %3$d" </string>
+    <string name="week_start_end">Week: %1$s - %2$s</string>
+    <string name="sum_week">Total for the week (starts on Monday): %1$d</string>
+    <string name="average_week_push_ups">Average number per day of the week: %1$d</string>
+    <string name="month_start_end">Current month: %1$s %2$s - %3$s</string>
+    <string name="count_push_ups_month">Number of push-ups for this month: %1$d</string>
+    <string name="average_push_ups_in_month">Average number per day of month: %1$d</string>
+    <string name="year_number">Year: %1$s</string>
+    <string name="count_push_up_year">Number of push-ups for this year: %1$d</string>
+    <string name="average_yearly_push_ups">Average number per day of the year: %1$d</string>
+    <string name="if_delete">Are you sure you want to delete it?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.yaroslav.pushupexercise.ui.main
 
 import android.app.DatePickerDialog
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yaroslav.pushupexercise.R
 import com.yaroslav.pushupexercise.appComponent
@@ -50,16 +52,36 @@ class MainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val args: MainFragmentArgs by navArgs()
-        if(args.data > 0){
-            pushUpViewModel.updateDate(args.data,action = 0)
-        }
+
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val args: MainFragmentArgs by navArgs()
 
-        binding.recyclerExercise.layoutManager =
-            LinearLayoutManager(context)
+        //if main fragment launch after navigate is launched with the data that was before navigation
+        //else launch with now date
+        if(args.data > 0){
+            pushUpViewModel.updateDate(args.data,action = 0)
+        }else{
+            pushUpViewModel.updateDate((Date().time/1000).toInt(),action = 0)
+        }
+
+        //different type layoutManager of recyclerView lashes for different orientation
+        when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                // landscape orientation
+                binding.recyclerExercise.layoutManager = GridLayoutManager(context,6)
+                    //LinearLayoutManager(context)
+            }
+            Configuration.ORIENTATION_PORTRAIT -> {
+                // portrait orientation
+                binding.recyclerExercise.layoutManager =
+                    LinearLayoutManager(context)
+            }
+            Configuration.ORIENTATION_UNDEFINED -> {
+                // undefined orientation
+            }
+        }
 
         adapter = PushUpAdapter(childFragmentManager, this::deletePushUpById, this::editPushUpById)
 
@@ -73,8 +95,7 @@ class MainFragment : Fragment() {
 
         lifecycleScope.launch {
             pushUpViewModel.pushUpsCountStateFlow.collect() {
-                //todo replace
-                binding.textSum.text = "Łącznie: " + it.toString()
+                binding.textSum.text = getString(R.string.total_push_ups_day_main, it.toString())
             }
         }
         binding.buttonAdd.setOnClickListener {
@@ -110,7 +131,9 @@ class MainFragment : Fragment() {
         }
 
         binding.buttonStatistics.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_statisticsFragment)
+        val action = MainFragmentDirections.actionMainFragmentToStatisticsFragment(date = dateSeconds)
+        findNavController().navigate(action)
+        // findNavController().navigate(R.id.action_mainFragment_to_statisticsFragment)
         }
     }
 
@@ -122,7 +145,7 @@ class MainFragment : Fragment() {
 
         val datePickerDialog = DatePickerDialog(
             requireContext(),
-            { view, selectedYear, selectedMonth, selectedDay ->
+            { _, selectedYear, selectedMonth, selectedDay ->
                 // Do something with the selected date (e.g. update a TextView with the selected date)
                 val calendar = Calendar.getInstance()
                 calendar.set(selectedYear, selectedMonth, selectedDay)

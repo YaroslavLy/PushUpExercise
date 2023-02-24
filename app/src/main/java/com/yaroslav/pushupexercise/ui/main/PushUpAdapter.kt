@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.yaroslav.pushupexercise.R
 import com.yaroslav.pushupexercise.databinding.FragmentPushUpItemBinding
 import com.yaroslav.pushupexercise.models.PushUp
 import com.yaroslav.pushupexercise.utils.formatHour24AndMinutes
@@ -102,11 +103,11 @@ interface DialogActions{
 class PurchaseConfirmationDialogFragment(private val dialogActions:DialogActions) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(requireContext())
-            .setMessage("Czy na pewno chcesz to usunąć?")
-            .setPositiveButton("Tak") { _,_ ->
+            .setMessage(getString(R.string.if_delete))
+            .setPositiveButton(getString(R.string.yes)) { _,_ ->
                 dialogActions.onClickOK()
-            }.setNeutralButton("Anulować"){_,_-> }
-            .setNegativeButton("Nie"){_,_->}
+            }.setNeutralButton(getString(R.string.cancel)){_,_-> }
+            .setNegativeButton(getString(R.string.no)){_,_->}
             .create()
 
 

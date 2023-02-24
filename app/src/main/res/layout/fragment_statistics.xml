@@ -114,7 +114,7 @@
             tools:text="Line 1"
             android:layout_weight="1"
             android:gravity="center|start"
-            android:textSize="20sp"
+            android:textSize="16sp"
             />
 
         <TextView
@@ -124,7 +124,7 @@
             tools:text="Line 2"
             android:layout_weight="1"
             android:gravity="center|start"
-            android:textSize="20sp"
+            android:textSize="16sp"
             />
 
         <TextView
@@ -134,7 +134,7 @@
             tools:text="Line 3"
             android:layout_weight="1"
             android:gravity="center|start"
-            android:textSize="20sp"
+            android:textSize="16sp"
             />
     </LinearLayout>
 

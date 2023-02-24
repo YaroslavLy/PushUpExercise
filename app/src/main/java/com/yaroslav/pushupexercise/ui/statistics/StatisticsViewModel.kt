@@ -16,6 +16,10 @@ class StatisticsViewModel @Inject constructor(
     private val pushUpRepository: PushUpRepository
 ) : ViewModel() {
 
+    private var _periodOptions = PeriodOptions.DAILY
+    val periodOptions : PeriodOptions
+        get() = _periodOptions
+
     private val _pushUpsSumDailyStateFlow = MutableStateFlow<List<PushUpSum>>(emptyList())
     val pushUpsSumDailyState = _pushUpsSumDailyStateFlow.asStateFlow()
 
@@ -29,10 +33,6 @@ class StatisticsViewModel @Inject constructor(
     //YEARLY
     private val _pushUpsSumYearlyStateFlow = MutableStateFlow<List<PushUpSumYear>>(emptyList())
     val pushUpsSumYearlyState = _pushUpsSumYearlyStateFlow.asStateFlow()
-
-
-
-    //make one graph one data
 
     init {
         viewModelScope.launch {
@@ -77,6 +77,10 @@ class StatisticsViewModel @Inject constructor(
                 _pushUpsSumYearlyStateFlow.value = it
             }
         }
+    }
+
+    fun setperiodOptions(periodOptions: PeriodOptions) {
+        _periodOptions = periodOptions
     }
 
 

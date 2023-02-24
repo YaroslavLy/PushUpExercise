@@ -1,11 +1,15 @@
 package com.yaroslav.pushupexercise.ui.add
 
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.yaroslav.pushupexercise.R
 import com.yaroslav.pushupexercise.appComponent
 import com.yaroslav.pushupexercise.databinding.FragmentAddExerciseBinding
+import com.yaroslav.pushupexercise.ui.statistics.StatisticsFragmentDirections
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,7 +34,6 @@ class AddExerciseFragment : Fragment() {
     }
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,29 +46,29 @@ class AddExerciseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: AddExerciseFragmentArgs by navArgs()
-        addPushUpViewModel.getData(args.idPushUp,args.dateSeconds)
+        addPushUpViewModel.getData(args.idPushUp, args.dateSeconds)
 
         lifecycleScope.launch {
-            addPushUpViewModel.countPushUpsState.collect{
+            addPushUpViewModel.countPushUpsState.collect {
                 binding.count.setText(it.toString())
             }
         }
 
         lifecycleScope.launch {
-            addPushUpViewModel.timeState.collect{
+            addPushUpViewModel.timeState.collect {
                 //todo move to utils
-                val sdf = SimpleDateFormat( "HH:mm")
-                binding.buttonTime.text = sdf.format(Date(it.toLong()*1000)).toString()
+                val sdf = SimpleDateFormat("HH:mm")
+                binding.buttonTime.text = sdf.format(Date(it.toLong() * 1000)).toString()
             }
         }
 
         binding.add.setOnClickListener {
-            addPushUpViewModel.updateCount(binding.count.text.toString().toInt())
+            updateCountPushUps()
             addPushUpViewModel.addCount()
         }
 
         binding.minus.setOnClickListener {
-            addPushUpViewModel.updateCount(binding.count.text.toString().toInt())
+            updateCountPushUps()
             addPushUpViewModel.minusCount()
         }
 
@@ -86,6 +90,26 @@ class AddExerciseFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                //super.handleOnBackPressed()
+                val action = AddExerciseFragmentDirections
+                    .actionAddExerciseFragmentToMainFragment(data = args.dateSeconds)
+                findNavController().navigate(action)
+            }
+        }
+
+        // Add the OnBackPressedCallback to the fragment's lifecycle
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
+    private fun updateCountPushUps() {
+        val editTextCountPushUp = binding.count.text
+        if (editTextCountPushUp.isNotEmpty()) {
+            addPushUpViewModel.updateCount(editTextCountPushUp.toString().toInt())
+        } else {
+            addPushUpViewModel.updateCount(0)
+        }
     }
 
 
@@ -101,7 +125,7 @@ class AddExerciseFragment : Fragment() {
                 calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
                 calendar.set(Calendar.MINUTE, selectedMinute)
                 val currentOfDayInMillis = calendar.timeInMillis // Get the time in milliseconds
-                val currentOfDayInSecondsRoom = (currentOfDayInMillis/1000).toInt()
+                val currentOfDayInSecondsRoom = (currentOfDayInMillis / 1000).toInt()
                 addPushUpViewModel.updateTime(currentOfDayInSecondsRoom)
             },
             hour,
@@ -111,5 +135,13 @@ class AddExerciseFragment : Fragment() {
         mTimePicker.setTitle("Ustaw Сzas")
         mTimePicker.show()
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0)
+    }
+
 
 }

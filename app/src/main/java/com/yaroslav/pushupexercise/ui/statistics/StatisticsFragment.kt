@@ -12,10 +12,13 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import android.graphics.Color
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.yaroslav.pushupexercise.R
@@ -31,7 +34,6 @@ import kotlin.math.abs
 import kotlin.math.roundToLong
 
 
-
 enum class PeriodOptions {
     DAILY, WEEKLY, MONTHLY, YEARLY
 }
@@ -45,7 +47,7 @@ class StatisticsFragment : Fragment() {
     private var _binding: FragmentStatisticsBinding? = null
     private val binding get() = _binding!!
 
-    private var periodOptions = PeriodOptions.DAILY
+    //private var periodOptions = PeriodOptions.DAILY
 
     private var dailyStatistics = DetailsStatistics()
     private var weeklyStatistics = DetailsStatistics()
@@ -59,8 +61,13 @@ class StatisticsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        initFilterAfterResume()//start dailyOptionTextView
+        //initFilterAfterResume()//start dailyOptionTextView
         //initGraphData(periodOptions)//start dailyOptionTextView
+        initAfterResume(statisticsViewModel.periodOptions)
+    }
+
+    private fun initAfterResume(periodOptions: PeriodOptions) {
+        initFilterAfterResume(periodOptions)
     }
 
     override fun onCreateView(
@@ -73,6 +80,8 @@ class StatisticsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val args: StatisticsFragmentArgs by navArgs()
+
 
         lifecycleScope.launch {
             statisticsViewModel.pushUpsSumDailyState.collect {
@@ -103,7 +112,6 @@ class StatisticsFragment : Fragment() {
 
             }
         }
-        //setGraphMonthly
 
         lifecycleScope.launch {
             statisticsViewModel.pushUpsSumYearlyState.collect {
@@ -117,7 +125,22 @@ class StatisticsFragment : Fragment() {
 
         optionsLayoutElementsColorSelected()
 
+        // Initialize the OnBackPressedCallback
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                //super.handleOnBackPressed()
+                val action =
+                    StatisticsFragmentDirections.actionStatisticsFragmentToMainFragment(data = args.date)
+                findNavController().navigate(action)
+            }
+        }
+
+        // Add the OnBackPressedCallback to the fragment's lifecycle
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
     }
+
+
 
     private fun updateStatisticsDetails(statistics: DetailsStatistics) {
         //todo add speakable naming
@@ -147,7 +170,8 @@ class StatisticsFragment : Fragment() {
                 if ((startCurrentDay - (timeLineDayInSeconds * it1.toLong())) < (recordTime)
                     && (recordTime) < (endCurrentDay - (timeLineDayInSeconds * it1.toLong()))
                 ) {
-                    val time = ((startCurrentDay - (timeLineDayInSeconds * it1.toLong())) / 1000).toInt()
+                    val time =
+                        ((startCurrentDay - (timeLineDayInSeconds * it1.toLong())) / 1000).toInt()
                     newPushUps.add(PushUpSum(it2.sumCountPushUps, time))
                     pushUps.remove(it2)
                 }
@@ -162,6 +186,7 @@ class StatisticsFragment : Fragment() {
 
         val preLastDayData = newPushUps[newPushUps.size - 2].sumCountPushUps
         val lastDayData = newPushUps[newPushUps.size - 1].sumCountPushUps
+
         setStatisticDataDaily(preLastDayData, lastDayData)
 
         val entries = newPushUps.map { pushUp ->
@@ -170,7 +195,7 @@ class StatisticsFragment : Fragment() {
         }
 
         // create a dataset and customize its appearance
-        val dataSet = LineDataSet(entries, "Push-Up Count")
+        val dataSet = LineDataSet(entries, getString(R.string.push_up_count))
         dataSet.color = Color.BLUE
         dataSet.lineWidth = 4.0f
         dataSet.setDrawValues(true)
@@ -198,10 +223,9 @@ class StatisticsFragment : Fragment() {
             }
         }
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        //xAxis.granularity = 86400000f// - 86400000f  // one day in milliseconds
         xAxis.granularity = 10f//
         xAxis.labelCount = 7
-        
+
         // set the visible range of the X-axis
         lineChart.setVisibleXRangeMaximum(7 * 100000f) // 7 days
         lineChart.moveViewToX(entries.last().x) // scroll to the end of the chart
@@ -209,24 +233,36 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun setStatisticDataDaily(preLastDayData: Int, lastDayData: Int) {
-        //val dateFormatDay = formatFullDateWithDots
-        dailyStatistics.line1 = "Dzień: " + formatFullDateWithDots.format(Date().time)
-        val com = if (preLastDayData < lastDayData) "% więcej " else "% mniej "
+        dailyStatistics.line1 =
+            getString(R.string.day_with_data, formatFullDateWithDots.format(Date().time))
+        val com = if (preLastDayData < lastDayData) getString(R.string.more_procent)
+        else
+            getString(R.string.less_procent)
 
-        var procent = (abs(preLastDayData - lastDayData).toFloat() / lastDayData.toFloat()) * 100
-
-        procent = if (procent > 100.0f) 100.0f else procent
+        val procent = if (preLastDayData < lastDayData)
+            ((lastDayData - preLastDayData).toFloat() / preLastDayData.toFloat()) * 100
+        else
+            ((preLastDayData - lastDayData).toFloat() / lastDayData.toFloat()) * 100
 
         if (preLastDayData == lastDayData) {
-            dailyStatistics.line2 = "Dziś jest jak wczoraj(" + preLastDayData.toString() + ")"
-        } else {
             dailyStatistics.line2 =
-                "Dziś(" + lastDayData.toString() + ") na " + procent.roundToLong().toString() +
-                        com + "niż poprzedniego dnia (" + preLastDayData.toString() + ")"
+                getString(R.string.equals_previous_day, preLastDayData.toString())
+        } else {
+            dailyStatistics.line2 = getString(
+                R.string.not_equals_previous_day,
+                lastDayData.toString(),
+                procent.roundToLong().toString(),
+                com,
+                preLastDayData.toString()
+            )
         }
-
-        dailyStatistics.line3 =
-            "Jeśli tyle razy każdego dnia, to za tydzień ${lastDayData * 7} za miesiąc ${lastDayData * 31} za rok ${lastDayData * 365}"
+        //todo not 31 bu days in current month
+        dailyStatistics.line3 = getString(
+            R.string.prognosis_for_week_month_year,
+            lastDayData * 7,
+            lastDayData * 31,
+            lastDayData * 365
+        )
     }
 
     private fun setGraphWeekly(pushUpSums: MutableList<PushUpSum>) {
@@ -273,7 +309,7 @@ class StatisticsFragment : Fragment() {
 
 
         // create a dataset and customize its appearance
-        val dataSet = LineDataSet(entries, "Push-Up Count")
+        val dataSet = LineDataSet(entries, getString(R.string.push_up_count))
         dataSet.color = Color.BLUE
         dataSet.lineWidth = 4.0f
         dataSet.setDrawValues(true)
@@ -304,7 +340,6 @@ class StatisticsFragment : Fragment() {
         xAxis.granularity = 100000f
         xAxis.labelCount = 7
 
-
         // set the visible range of the X-axis
         lineChart.setVisibleXRangeMaximum(7 * 100000f) // 7 days
         lineChart.moveViewToX(entries.last().x) // scroll to the end of the chart
@@ -317,14 +352,18 @@ class StatisticsFragment : Fragment() {
         val calendar3 = Calendar.getInstance()
         calendar3.time = Date()
         calendar3.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
-        weeklyStatistics.line1 =
-            "Tydzień " + formatFullDateWithDots.format(calendar2.time) + " - " +
-                    formatFullDateWithDots.format(calendar3.time)
-        weeklyStatistics.line2 = "Suma za tydzień(zaczyna się w poniedziałek): $lastPushUp"
+        weeklyStatistics.line1 = getString(
+            R.string.week_start_end,
+            formatFullDateWithDots.format(calendar2.time),
+            formatFullDateWithDots.format(calendar3.time)
+        )
+        weeklyStatistics.line2 = getString(R.string.sum_week, lastPushUp)
         val diffInMillies = calendar2.time.time - Date().time
         val dayBetweenTwoDates = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS)
-        weeklyStatistics.line3 =
-            "Średnia liczba na dzień tygodnia: ${(lastPushUp.toFloat() / (abs(dayBetweenTwoDates) + 1).toFloat()).roundToLong()}"
+        weeklyStatistics.line3 = getString(
+            R.string.average_week_push_ups,
+            (lastPushUp.toFloat() / (abs(dayBetweenTwoDates) + 1).toFloat()).roundToLong()
+        )
     }
 
     private fun setGraphMonthly(pushUpSums: MutableList<PushUpSumMonth>) {
@@ -337,12 +376,12 @@ class StatisticsFragment : Fragment() {
             Entry((timestampMillis / 2678400000).toFloat() + 1f, pushUp.sumCountPushUps.toFloat())
         }
 
-        val pushUpSum =  pushUpSums[pushUpSums.size-1].sumCountPushUps
+        val pushUpSum = pushUpSums[pushUpSums.size - 1].sumCountPushUps
 
         setStatisticDataMonthly(pushUpSum)
 
         // create a dataset and customize its appearance
-        val dataSet = LineDataSet(entries, "Push-Up Count")
+        val dataSet = LineDataSet(entries, getString(R.string.push_up_count))
         dataSet.color = Color.BLUE
         dataSet.lineWidth = 4.0f
         dataSet.setDrawValues(true)
@@ -379,6 +418,7 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun setStatisticDataMonthly(pushUpSum: Int) {
+
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         val startDate = calendar.time
@@ -386,17 +426,19 @@ class StatisticsFragment : Fragment() {
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
         val endDate = calendar.time
         val endDateStr = formatFullDateWithDots.format(endDate)
-        monthlyStatistics.line1 =
-            "Obecny miesiąc: ${formatFullNameMonth.format(Calendar.getInstance().time)}" +
-                    " $startDateStr - $endDateStr"
-        monthlyStatistics.line2 = "Ilość pompek na ten miesiąc: ${pushUpSum}"
+        monthlyStatistics.line1 = getString(
+            R.string.month_start_end, formatFullNameMonth.format(Calendar.getInstance().time),
+            startDateStr, endDateStr
+        )
+
+        monthlyStatistics.line2 = getString(R.string.count_push_ups_month, pushUpSum)
 
         val calendar2 = Calendar.getInstance()
         val currentDayOfMonth = calendar2.get(Calendar.DAY_OF_MONTH)
         calendar2.set(Calendar.DAY_OF_MONTH, 1)
 
         val averageNumber = (pushUpSum.toFloat() / currentDayOfMonth.toFloat()).roundToLong()
-        monthlyStatistics.line3 = "Średnia liczba na dzień miesiąca: $averageNumber"
+        monthlyStatistics.line3 = getString(R.string.average_push_ups_in_month, averageNumber)
     }
 
 
@@ -408,11 +450,11 @@ class StatisticsFragment : Fragment() {
             Entry(pushUp.year.toFloat(), pushUp.totalPushUps.toFloat())
         }
 
-        val sumPushUpSumYear = pushUpSumYears[pushUpSumYears.size-1].totalPushUps
+        val sumPushUpSumYear = pushUpSumYears[pushUpSumYears.size - 1].totalPushUps
         setStatisticDataYearly(sumPushUpSumYear)
 
         // create a dataset and customize its appearance
-        val dataSet = LineDataSet(entries, "Push-Up Count") // todo replace in all pleases
+        val dataSet = LineDataSet(entries, getString(R.string.push_up_count))
         dataSet.color = Color.BLUE
         dataSet.lineWidth = 4.0f
         dataSet.setDrawValues(true)
@@ -451,16 +493,16 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun setStatisticDataYearly(sumPushUpSumYear: Int) {
-        yearlyStatistics.line1 = "Rok: ${formatYear.format(Date())}"
-        yearlyStatistics.line2 = "Ilość pompek na ten rok: $sumPushUpSumYear"
+        yearlyStatistics.line1 = getString(R.string.year_number, formatYear.format(Date()))
+        yearlyStatistics.line2 = getString(R.string.count_push_up_year, sumPushUpSumYear)
         val dayStartYearAndNow = formatDayInYear.format(Date()).toInt()
         val averagePushUpInYear =
             (sumPushUpSumYear.toFloat() / dayStartYearAndNow.toFloat()).roundToLong()
-        yearlyStatistics.line3 = "Średnia liczba na dzień roku: $averagePushUpInYear"
+        yearlyStatistics.line3 = getString(R.string.average_yearly_push_ups, averagePushUpInYear)
     }
 
     private fun initGraphData() {
-        when (periodOptions) {
+        when (statisticsViewModel.periodOptions) {
             PeriodOptions.DAILY -> {
                 statisticsViewModel.getDailyData()
             }
@@ -477,7 +519,7 @@ class StatisticsFragment : Fragment() {
 
     }
 
-    private fun initFilterAfterResume() {
+    private fun initFilterAfterResume(periodOptions: PeriodOptions) {
         //init color
         binding.timePeriodOptionsLayout.forEach {
             if (it is TextView) {
@@ -486,28 +528,62 @@ class StatisticsFragment : Fragment() {
                 )
             }
         }
-        binding.dailyOptionTextView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.purple_500
-            )
-        )
+        when (periodOptions) {
+            PeriodOptions.DAILY -> {
+                binding.dailyOptionTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.purple_500
+                    )
+                )
+                statisticsViewModel.getDailyData()
+            }
+            PeriodOptions.WEEKLY -> {
+                binding.weeklyOptionTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.purple_500
+                    )
+                )
+                statisticsViewModel.getWeeklyData()
+            }
+            PeriodOptions.MONTHLY -> {
+                binding.monthlyOptionTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.purple_500
+                    )
+                )
+                statisticsViewModel.getMonthlyData()
+            }
+            PeriodOptions.YEARLY -> {
+                binding.yearlyOptionTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.purple_500
+                    )
+                )
+                statisticsViewModel.getYearlyData()
+            }
+        }
+
+        //binding.dailyOptionTextView
 
     }
 
     private fun optionsSelected(id: Int) {
         when (id) {
             binding.dailyOptionTextView.id -> {
-                periodOptions = PeriodOptions.DAILY
+                statisticsViewModel.setperiodOptions(PeriodOptions.DAILY)
             }
             binding.weeklyOptionTextView.id -> {
-                periodOptions = PeriodOptions.WEEKLY
+                statisticsViewModel.setperiodOptions(PeriodOptions.WEEKLY)
             }
             binding.monthlyOptionTextView.id -> {
-                periodOptions = PeriodOptions.MONTHLY
+                statisticsViewModel.setperiodOptions(PeriodOptions.MONTHLY)
             }
             binding.yearlyOptionTextView.id -> {
-                periodOptions = PeriodOptions.YEARLY
+                statisticsViewModel.setperiodOptions(PeriodOptions.YEARLY)
             }
         }
         setVisibilityGraphs()
@@ -516,7 +592,7 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun initStatistics() {
-        when (periodOptions) {
+        when (statisticsViewModel.periodOptions) {
             PeriodOptions.DAILY -> {
                 updateStatisticsDetails(dailyStatistics)
             }
@@ -544,7 +620,7 @@ class StatisticsFragment : Fragment() {
         lineChartWeekly.visibility = View.GONE
         lineChartMonthly.visibility = View.GONE
         lineChartYearly.visibility = View.GONE
-        when (periodOptions) {
+        when (statisticsViewModel.periodOptions) {
             PeriodOptions.DAILY -> {
                 lineChartDaily.visibility = View.VISIBLE
             }

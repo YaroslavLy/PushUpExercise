@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">pushupexercise</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="push_up_count">Liczba pompek</string>
+    <string name="total_push_ups_day_main">Łącznie: %1$s</string>
+    <string name="statistics_button_main">Statystyka</string>
+    <string name="add_button_main">Dodaj</string>
+    <string name="day_with_data">Dzień: %1$s</string>
+    <string name="equals_previous_day">Jest jak wczoraj( %1$s )</string>
+    <string name="not_equals_previous_day">Dziś (%1$s) na  %2$s %3$s niż poprzedniego dnia (%4$s)</string>
+    <string name="more_procent">% więcej </string>
+    <string name="less_procent">% mniej </string>
+    <string name="prognosis_for_week_month_year">"Jeśli tyle razy każdego dnia, to za tydzień %1$d za miesiąc %2$d za rok %3$d" </string>
+    <string name="week_start_end">Tydzień: %1$s - %2$s</string>
+    <string name="sum_week">Suma za tydzień(zaczyna się w poniedziałek): %1$d</string>
+    <string name="average_week_push_ups">Średnia liczba na dzień tygodnia: %1$d</string>
+    <string name="month_start_end">Obecny miesiąc: %1$s %2$s - %3$s</string>
+    <string name="count_push_ups_month">Ilość pompek na ten miesiąc: %1$d</string>
+    <string name="average_push_ups_in_month">Średnia liczba na dzień miesiąca: %1$d</string>
+    <string name="year_number">Rok: %1$s</string>
+    <string name="count_push_up_year">Ilość pompek na ten rok: %1$d</string>
+    <string name="average_yearly_push_ups">Średnia liczba na dzień roku: %1$d</string>
+    <string name="if_delete">Czy na pewno chcesz to usunąć?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="cancel">Anulować</string>
+</resources>
