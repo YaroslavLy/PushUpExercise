@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">pushupexercise</string>
+    <string name="app_name">Push-up Counter</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="push_up_count">Push Up Count</string>
     <string name="total_push_ups_day_main">Total: %1$s</string>
@@ -24,4 +24,14 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="cancel">Cancel</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+    <string name="set_time">Set Time</string>
+    <string name="no_push_ups">There were no push-ups today</string>
+    <string name="fragment_main">Push-up counter</string>
+    <string name="fragment_statistics">Statistics</string>
+    <string name="fragment_add_exercise">Add push-ups</string>
+    <string name="no_push_ups_day_before">Today is much better than the day before</string>
 </resources>

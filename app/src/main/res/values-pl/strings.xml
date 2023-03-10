@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">pushupexercise</string>
+    <string name="app_name">Licznik Pompek</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="push_up_count">Liczba pompek</string>
     <string name="total_push_ups_day_main">Łącznie: %1$s</string>
@@ -25,4 +25,14 @@
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="cancel">Anulować</string>
+    <string name="daily">Dziennie</string>
+    <string name="weekly">Tygodniowo</string>
+    <string name="monthly">Miesięcznie</string>
+    <string name="yearly">Rocznie</string>
+    <string name="set_time">Ustaw Сzas</string>
+    <string name="no_push_ups">Dzisiaj nie było pompek</string>
+    <string name="fragment_statistics">Statystyka</string>
+    <string name="fragment_main">Licznik pompek</string>
+    <string name="fragment_add_exercise">Dodaj pompki</string>
+    <string name="no_push_ups_day_before">Dziś jest dużo lepiej niż dzień wcześniej</string>
 </resources>

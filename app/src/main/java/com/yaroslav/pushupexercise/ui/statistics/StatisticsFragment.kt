@@ -10,7 +10,6 @@ import com.yaroslav.pushupexercise.databinding.FragmentStatisticsBinding
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import android.graphics.Color
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -81,6 +80,7 @@ class StatisticsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: StatisticsFragmentArgs by navArgs()
+
 
 
         lifecycleScope.launch {
@@ -196,10 +196,20 @@ class StatisticsFragment : Fragment() {
 
         // create a dataset and customize its appearance
         val dataSet = LineDataSet(entries, getString(R.string.push_up_count))
-        dataSet.color = Color.BLUE
+        dataSet.color = ContextCompat.getColor(
+            requireContext(),
+            R.color.primaryDarkColor
+        )//Color.BLUE
+
         dataSet.lineWidth = 4.0f
         dataSet.setDrawValues(true)
         dataSet.circleRadius = 4.0f
+        //todo add all places
+        dataSet.valueTextColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+        //dataSet.color
 
         // create a LineData object with the dataset
         val lineData = LineData(dataSet)
@@ -214,6 +224,21 @@ class StatisticsFragment : Fragment() {
 
         // enable horizontal scrolling
         lineChart.isDragEnabled = true
+
+        //todo add in all places
+        lineChart.xAxis.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+        lineChart.axisLeft.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+        lineChart.axisRight.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+
 
         // customize the appearance of the X-axis
         val xAxis = lineChart.xAxis
@@ -244,6 +269,25 @@ class StatisticsFragment : Fragment() {
         else
             ((preLastDayData - lastDayData).toFloat() / lastDayData.toFloat()) * 100
 
+
+        //todo not 31 bu days in current month
+        dailyStatistics.line3 = getString(
+            R.string.prognosis_for_week_month_year,
+            lastDayData * 7,
+            lastDayData * 31,
+            lastDayData * 365
+        )
+
+        if(lastDayData==0){
+            dailyStatistics.line2 = getString(R.string.no_push_ups)
+            return
+        }
+
+        if(preLastDayData == 0){
+            dailyStatistics.line2 = getString(R.string.no_push_ups_day_before)
+            return
+        }
+
         if (preLastDayData == lastDayData) {
             dailyStatistics.line2 =
                 getString(R.string.equals_previous_day, preLastDayData.toString())
@@ -256,13 +300,7 @@ class StatisticsFragment : Fragment() {
                 preLastDayData.toString()
             )
         }
-        //todo not 31 bu days in current month
-        dailyStatistics.line3 = getString(
-            R.string.prognosis_for_week_month_year,
-            lastDayData * 7,
-            lastDayData * 31,
-            lastDayData * 365
-        )
+
     }
 
     private fun setGraphWeekly(pushUpSums: MutableList<PushUpSum>) {
@@ -310,10 +348,17 @@ class StatisticsFragment : Fragment() {
 
         // create a dataset and customize its appearance
         val dataSet = LineDataSet(entries, getString(R.string.push_up_count))
-        dataSet.color = Color.BLUE
+        dataSet.color = ContextCompat.getColor(
+            requireContext(),
+            R.color.primaryDarkColor
+        )//Color.BLUE
         dataSet.lineWidth = 4.0f
         dataSet.setDrawValues(true)
         dataSet.circleRadius = 4.0f
+        dataSet.valueTextColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
 
         // create a LineData object with the dataset
         val lineData = LineData(dataSet)
@@ -328,6 +373,19 @@ class StatisticsFragment : Fragment() {
 
         // enable horizontal scrolling
         lineChart.isDragEnabled = true
+
+        lineChart.xAxis.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+        lineChart.axisLeft.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+        lineChart.axisRight.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
 
         // customize the appearance of the X-axis
         val xAxis = lineChart.xAxis
@@ -382,10 +440,17 @@ class StatisticsFragment : Fragment() {
 
         // create a dataset and customize its appearance
         val dataSet = LineDataSet(entries, getString(R.string.push_up_count))
-        dataSet.color = Color.BLUE
+        dataSet.color = ContextCompat.getColor(
+            requireContext(),
+            R.color.primaryDarkColor
+        )//Color.BLUE
         dataSet.lineWidth = 4.0f
         dataSet.setDrawValues(true)
         dataSet.circleRadius = 4.0f
+        dataSet.valueTextColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
 
         // create a LineData object with the dataset
         val lineData = LineData(dataSet)
@@ -400,6 +465,19 @@ class StatisticsFragment : Fragment() {
 
         // enable horizontal scrolling
         lineChart.isDragEnabled = true
+
+        lineChart.xAxis.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+        lineChart.axisLeft.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+        lineChart.axisRight.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
 
         // customize the appearance of the X-axis
         val xAxis = lineChart.xAxis
@@ -455,10 +533,17 @@ class StatisticsFragment : Fragment() {
 
         // create a dataset and customize its appearance
         val dataSet = LineDataSet(entries, getString(R.string.push_up_count))
-        dataSet.color = Color.BLUE
+        dataSet.color = ContextCompat.getColor(
+            requireContext(),
+            R.color.primaryDarkColor
+        )//Color.BLUE
         dataSet.lineWidth = 4.0f
         dataSet.setDrawValues(true)
         dataSet.circleRadius = 4.0f
+        dataSet.valueTextColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
 
         // create a LineData object with the dataset
         val lineData = LineData(dataSet)
@@ -474,11 +559,24 @@ class StatisticsFragment : Fragment() {
         // enable horizontal scrolling
         lineChart.isDragEnabled = true
 
+        lineChart.xAxis.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+        lineChart.axisLeft.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+        lineChart.axisRight.textColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.purple_500
+        )
+
         // customize the appearance of the X-axis
         val xAxis = lineChart.xAxis
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return value.toInt().toString() + " y"
+                return value.toInt().toString() //+ " y"
             }
         }
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -566,8 +664,11 @@ class StatisticsFragment : Fragment() {
                 statisticsViewModel.getYearlyData()
             }
         }
-
+        //statisticsViewModel.setperiodOptions(periodOptions)
         //binding.dailyOptionTextView
+        setVisibilityGraphs()
+        initGraphData()
+        initStatistics()
 
     }
 

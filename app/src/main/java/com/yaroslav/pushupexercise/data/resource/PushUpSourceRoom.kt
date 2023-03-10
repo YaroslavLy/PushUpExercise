@@ -2,8 +2,6 @@ package com.yaroslav.pushupexercise.data.resource
 
 import com.yaroslav.pushupexercise.data.PushUpsSource
 import com.yaroslav.pushupexercise.models.PushUp
-import com.yaroslav.pushupexercise.models.PushUpSum
-import com.yaroslav.pushupexercise.models.PushUpSumYear
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

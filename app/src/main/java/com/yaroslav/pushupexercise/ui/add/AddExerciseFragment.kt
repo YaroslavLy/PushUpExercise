@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,17 +16,14 @@ import androidx.navigation.fragment.navArgs
 import com.yaroslav.pushupexercise.R
 import com.yaroslav.pushupexercise.appComponent
 import com.yaroslav.pushupexercise.databinding.FragmentAddExerciseBinding
-import com.yaroslav.pushupexercise.ui.statistics.StatisticsFragmentDirections
+import com.yaroslav.pushupexercise.utils.formatHour24AndMinutes
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddExerciseFragment : Fragment() {
 
     private var _binding: FragmentAddExerciseBinding? = null
     private val binding get() = _binding!!
-
-    private var data = 0
 
     private val addPushUpViewModel: AddViewModel by viewModels {
         appComponent.addViewModelsFactory()
@@ -56,9 +52,8 @@ class AddExerciseFragment : Fragment() {
 
         lifecycleScope.launch {
             addPushUpViewModel.timeState.collect {
-                //todo move to utils
-                val sdf = SimpleDateFormat("HH:mm")
-                binding.buttonTime.text = sdf.format(Date(it.toLong() * 1000)).toString()
+                binding.buttonTime.text = formatHour24AndMinutes
+                    .format(Date(it.toLong() * 1000)).toString()
             }
         }
 
@@ -98,7 +93,6 @@ class AddExerciseFragment : Fragment() {
                 findNavController().navigate(action)
             }
         }
-
         // Add the OnBackPressedCallback to the fragment's lifecycle
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
@@ -118,8 +112,7 @@ class AddExerciseFragment : Fragment() {
         val hour = currentTime[Calendar.HOUR_OF_DAY]
         val minute = currentTime[Calendar.MINUTE]
         val mTimePicker = TimePickerDialog(
-            requireContext(), { timePicker, selectedHour, selectedMinute ->
-                //binding.buttonTime.text = "$selectedHour:$selectedMinute"
+            requireContext(), { _ , selectedHour, selectedMinute ->
                 //todo move to utils
                 val calendar = Calendar.getInstance() // Get a Calendar instance
                 calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
@@ -132,7 +125,7 @@ class AddExerciseFragment : Fragment() {
             minute,
             true
         ) //Yes 24 hour time
-        mTimePicker.setTitle("Ustaw Сzas")
+        mTimePicker.setTitle(getString(R.string.set_time))
         mTimePicker.show()
     }
 
@@ -140,7 +133,7 @@ class AddExerciseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0)
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
 

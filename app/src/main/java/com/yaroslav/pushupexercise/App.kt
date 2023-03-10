@@ -21,8 +21,6 @@ class App : Application() {
 
 }
 
-//fun Fragment.getAppComponent(): AppComponent = (requireContext() as App).appComponent
-
 val Fragment.appComponent : AppComponent
     get() = requireContext().appComponent
 

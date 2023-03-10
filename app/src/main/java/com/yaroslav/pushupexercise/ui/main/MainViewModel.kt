@@ -30,6 +30,12 @@ class MainViewModel @Inject constructor(
     private val _dateStateFlow = MutableStateFlow<Int>((Date().time / 1000).toInt())
     val dateState = _dateStateFlow.asStateFlow()
 
+    private var _dateStateFlow2 = 0
+    val dateState2 : Int
+        get() = _dateStateFlow2
+
+
+
 
 
 //    init {
@@ -55,13 +61,17 @@ class MainViewModel @Inject constructor(
         when (action) {
             0 -> {
                 _dateStateFlow.value = dateTime
+                _dateStateFlow2 = dateTime
             }
             1 -> {
-                if (_dateStateFlow.value + 86400 < (Date().time / 1000).toInt())
+                if (_dateStateFlow.value + 86400 < (Date().time / 1000).toInt()) {
                     _dateStateFlow.value = _dateStateFlow.value + 86400
+                    _dateStateFlow2 = _dateStateFlow.value + 86400
+                }
             }
             -1 -> {
                 _dateStateFlow.value = _dateStateFlow.value - 86400
+                _dateStateFlow2 = _dateStateFlow.value - 86400
             }
             else -> {}
         }

@@ -34,13 +34,13 @@ class StatisticsViewModel @Inject constructor(
     private val _pushUpsSumYearlyStateFlow = MutableStateFlow<List<PushUpSumYear>>(emptyList())
     val pushUpsSumYearlyState = _pushUpsSumYearlyStateFlow.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            pushUpRepository.getPushUpsDaily().collect {
-                _pushUpsSumDailyStateFlow.value = it
-            }
-        }
-    }
+//    init {
+//        viewModelScope.launch {
+//            pushUpRepository.getPushUpsDaily().collect {
+//                _pushUpsSumDailyStateFlow.value = it
+//            }
+//        }
+//    }
 
     fun getDailyData(){
         viewModelScope.launch {
@@ -54,10 +54,7 @@ class StatisticsViewModel @Inject constructor(
     //WEEKLY
     fun getWeeklyData(){
         viewModelScope.launch {
-            //_pushUpsSumStateFlow.value = emptyList()
             pushUpRepository.getPushUpsWeekly().collect{
-                //_pushUpsSumStateFlow.value = emptyList()
-                //_pushUpsSumStateFlow.value = it.map {it2 -> PushUpSum(it2.sumCountPushUps,it2.recordTime) }
                 _pushUpsSumWeeklyStateFlow.value =it.map {it2 -> PushUpSum(it2.sumCountPushUps,it2.recordTime) }
             }
         }
@@ -82,12 +79,4 @@ class StatisticsViewModel @Inject constructor(
     fun setperiodOptions(periodOptions: PeriodOptions) {
         _periodOptions = periodOptions
     }
-
-
-//    fun clearData() {
-//        viewModelScope.launch {
-//            _pushUpsSumDailyStateFlow.value = emptyList()
-//        }
-//    }
-
 }

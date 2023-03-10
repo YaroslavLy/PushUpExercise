@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/addExerciseFragment"
         android:name="com.yaroslav.pushupexercise.ui.add.AddExerciseFragment"
-        android:label="fragment_add_exercise"
+        android:label="@string/fragment_add_exercise"
         tools:layout="@layout/fragment_add_exercise" >
         <action
             android:id="@+id/action_addExerciseFragment_to_mainFragment"
@@ -27,7 +27,7 @@
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.yaroslav.pushupexercise.ui.statistics.StatisticsFragment"
-        android:label="fragment_statistics"
+        android:label="@string/fragment_statistics"
         tools:layout="@layout/fragment_statistics" >
         <action
             android:id="@+id/action_statisticsFragment_to_mainFragment"
@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.yaroslav.pushupexercise.ui.main.MainFragment"
-        android:label="fragment_main"
+        android:label="@string/fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_statisticsFragment"

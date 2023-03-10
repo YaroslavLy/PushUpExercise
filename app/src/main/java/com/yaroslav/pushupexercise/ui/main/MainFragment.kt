@@ -1,6 +1,7 @@
 package com.yaroslav.pushupexercise.ui.main
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -54,16 +55,19 @@ class MainFragment : Fragment() {
         super.onResume()
 
     }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: MainFragmentArgs by navArgs()
 
         //if main fragment launch after navigate is launched with the data that was before navigation
         //else launch with now date
-        if(args.data > 0){
+        if(args.data > 0  && pushUpViewModel.dateState2 == 0 ){
             pushUpViewModel.updateDate(args.data,action = 0)
         }else{
-            pushUpViewModel.updateDate((Date().time/1000).toInt(),action = 0)
+            if(pushUpViewModel.dateState2 == 0 )
+                pushUpViewModel.updateDate((Date().time/1000).toInt(),action = 0)
         }
 
         //different type layoutManager of recyclerView lashes for different orientation
